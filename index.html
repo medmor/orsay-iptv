@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPTV Player</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script type="text/javascript" src="$MANAGER_WIDGET/Common/API/Widget.js"></script>
+    <script type="text/javascript" src="$MANAGER_WIDGET/Common/API/Plugin.js"></script>
+    <script type="text/javascript" src="$MANAGER_WIDGET/Common/API/TVKeyValue.js"></script>
+</head>
+<body>
+    <!-- Orsay hardware plugins. Common.API.Plugin looks up these exact ids. -->
+    <object id="pluginObjectNNavi" classid="clsid:SAMSUNG-INFOLINK-NNAVI" class="tv-plugin"></object>
+    <object id="pluginObjectTVMW" classid="clsid:SAMSUNG-INFOLINK-TVMW" class="tv-plugin"></object>
+    <object id="pluginObjectAudio" classid="clsid:SAMSUNG-INFOLINK-AUDIO" class="tv-plugin"></object>
+
+    <div id="loading" class="screen">
+        <div id="loading-box" class="loading-box">
+            <h1 class="app-title">IPTV Player</h1>
+            <p id="loading-text" class="loading-text">Loading playlist&hellip;</p>
+            <div class="spinner"></div>
+            <p id="loading-hint" class="hint">Press RETURN to exit</p>
+        </div>
+    </div>
+
+    <div id="browser" class="screen hidden">
+        <header class="topbar">
+            <div class="brand">IPTV<span class="dot">.</span>Player</div>
+            <div id="status-line" class="meta">&mdash;</div>
+        </header>
+        <div class="main">
+            <aside class="groups">
+                <div class="pane-title">Categories</div>
+                <ul id="group-list"></ul>
+            </aside>
+            <section class="channels">
+                <div class="pane-head">
+                    <span id="group-title" class="pane-heading">All channels</span>
+                    <span id="channel-pos" class="pane-pos"></span>
+                </div>
+                <ul id="channel-list" class="channel-list"></ul>
+            </section>
+        </div>
+        <footer class="bottombar">
+            <span><b>&#9664; &#9654;</b> Pane</span>
+            <span><b>&#9650; &#9660;</b> Move</span>
+            <span><b>ENTER</b> Play</span>
+            <span><b>RED</b> Grid/list</span>
+            <span><b>GREEN</b> Favorite</span>
+            <span><b>BLUE</b> Reload</span>
+            <span><b>RETURN</b> Back</span>
+        </footer>
+    </div>
+
+    <div id="player" class="screen hidden">
+        <video id="html5-video" class="video-layer" playsinline webkit-playsinline></video>
+        <object id="tv-player" classid="clsid:SAMSUNG-INFOLINK-PLAYER" width="1280" height="720" class="video-layer"></object>
+        <div id="player-overlay" class="player-overlay">
+            <div class="now-playing-label">NOW PLAYING</div>
+            <div id="now-playing-name" class="now-playing-name"></div>
+            <div id="now-playing-group" class="now-playing-group"></div>
+            <div class="player-hints"><b>ENTER</b> Channel list &nbsp; <b>INFO</b> Info &nbsp; <b>&#9650; &#9660;</b> Channel &nbsp; <b>YELLOW</b> HLS/TS &nbsp; <b>RETURN</b> Back</div>
+        </div>
+    </div>
+
+    <div id="volume-box" class="volume-box hidden">
+        <span id="volume-label" class="volume-label">VOL</span>
+        <div class="volume-track"><div id="volume-fill" class="volume-fill"></div></div>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+
+    <script type="text/javascript" src="js/m3u.js"></script>
+    <script type="text/javascript" src="js/player.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+</body>
+</html>

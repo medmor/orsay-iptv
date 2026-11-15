@@ -1,0 +1,631 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #05080c;
+    color: #eaf2fa;
+    font-family: "Samsung Sans", "Open Sans", Arial, Helvetica, sans-serif;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.screen {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* ---------- Loading ---------- */
+
+#loading {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    background: #0b0f14;
+    background: radial-gradient(circle at 50% 40%, #14324a 0%, #05080c 70%);
+}
+
+.loading-box {
+    width: 720px;
+    text-align: center;
+}
+
+.app-title {
+    font-size: 44px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+.loading-text {
+    margin-top: 26px;
+    font-size: 18px;
+    color: #9fb3c8;
+}
+
+.loading-text.error {
+    color: #ff8a8a;
+}
+
+.spinner {
+    width: 44px;
+    height: 44px;
+    margin: 26px auto 0;
+    border: 4px solid rgba(255, 255, 255, 0.15);
+    border-top-color: #39b7ff;
+    border-radius: 50%;
+    -webkit-animation: spin 1s linear infinite;
+    animation: spin 1s linear infinite;
+}
+
+.loading-box.has-error .spinner {
+    display: none;
+}
+
+@-webkit-keyframes spin {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.hint {
+    margin-top: 26px;
+    font-size: 14px;
+    color: #6f8499;
+}
+
+/* ---------- Browser ---------- */
+
+#browser {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    background: #070d14;
+    background: -webkit-linear-gradient(top, #0a1622, #05080c);
+    background: linear-gradient(180deg, #0a1622, #05080c);
+}
+
+.topbar {
+    height: 64px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    padding: 0 22px;
+    background: rgba(10, 22, 34, 0.9);
+    border-bottom: 1px solid #12314a;
+}
+
+.brand {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.brand .dot {
+    color: #39b7ff;
+}
+
+.meta {
+    font-size: 14px;
+    color: #7d93a8;
+}
+
+.main {
+    -webkit-flex: 1;
+    flex: 1;
+    display: -webkit-flex;
+    display: flex;
+    min-height: 0;
+}
+
+/* ---------- Categories ---------- */
+
+.groups {
+    width: 340px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    min-height: 0;
+    background: rgba(8, 18, 28, 0.75);
+    border-right: 1px solid #12314a;
+}
+
+.pane-title {
+    padding: 14px 20px 10px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #5f7d99;
+}
+
+#group-list {
+    list-style: none;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: hidden;
+    padding: 0 10px 10px;
+}
+
+.grp-row {
+    height: 36px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    margin-bottom: 2px;
+    padding: 0 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #b9cbdc;
+}
+
+.grp-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.grp-count {
+    margin-left: 10px;
+    font-size: 12px;
+    color: #6f8aa3;
+}
+
+.grp-row.selected {
+    background: #1d4b6e;
+    color: #ffffff;
+}
+
+.grp-row.selected .grp-count {
+    color: #bcd9f0;
+}
+
+.grp-row.selected-dim {
+    background: rgba(29, 75, 110, 0.45);
+    color: #dbe9f6;
+}
+
+/* ---------- Channels ---------- */
+
+.channels {
+    -webkit-flex: 1;
+    flex: 1;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.pane-head {
+    height: 48px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    padding: 0 22px;
+    border-bottom: 1px solid #0f283c;
+}
+
+.pane-heading {
+    font-size: 18px;
+    font-weight: 600;
+    color: #d7e8f7;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.pane-pos {
+    font-size: 13px;
+    color: #6f8aa3;
+}
+
+.channel-list {
+    list-style: none;
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: hidden;
+    padding: 8px 14px;
+}
+
+.ch-row {
+    height: 56px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    margin-bottom: 4px;
+    padding: 0 12px;
+    border-radius: 8px;
+    background: rgba(16, 34, 50, 0.55);
+    color: #cfe0ef;
+}
+
+.ch-row.selected {
+    background: #155a86;
+    color: #ffffff;
+    box-shadow: 0 0 0 2px rgba(57, 183, 255, 0.7);
+}
+
+.ch-row.selected-dim {
+    background: rgba(21, 90, 134, 0.4);
+}
+
+.ch-row.playing .ch-name {
+    color: #7fd1ff;
+}
+
+.ch-num {
+    width: 52px;
+    font-size: 15px;
+    color: #7d93a8;
+    text-align: center;
+}
+
+.ch-row.selected .ch-num {
+    color: #cfe8fb;
+}
+
+.ch-logo {
+    position: relative;
+    -webkit-flex: 0 0 auto;
+    flex: 0 0 auto;
+    width: 46px;
+    height: 40px;
+    margin-right: 14px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 6px;
+    background: #0c2233;
+}
+
+.ch-logo img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #0c2233;
+    object-fit: contain;
+}
+
+.ch-initial {
+    font-size: 18px;
+    font-weight: 700;
+    color: #3f6f93;
+}
+
+.ch-text {
+    min-width: 0;
+    -webkit-flex: 1;
+    flex: 1;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+}
+
+.ch-name {
+    font-size: 16px;
+    font-weight: 600;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.ch-group {
+    margin-top: 2px;
+    font-size: 12px;
+    color: #6f8aa3;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.ch-fav {
+    margin-left: 10px;
+    font-size: 18px;
+    color: #ffcf5c;
+}
+
+.empty {
+    padding: 24px;
+    font-size: 15px;
+    color: #6f8aa3;
+}
+
+/* ---------- Footer ---------- */
+
+.bottombar {
+    height: 44px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    padding: 0 22px;
+    background: rgba(8, 18, 28, 0.9);
+    border-top: 1px solid #12314a;
+    font-size: 12px;
+    color: #7d93a8;
+}
+
+.bottombar span {
+    margin-right: 22px;
+}
+
+.bottombar b {
+    font-weight: 700;
+    color: #cfe0ef;
+}
+
+/* ---------- Player ---------- */
+
+#player {
+    z-index: 10;
+    background: #000000;
+}
+
+.video-layer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    border: 0;
+    background: #000000;
+}
+
+.video-layer.is-active {
+    display: block;
+}
+
+#html5-video {
+    object-fit: contain;
+}
+
+.player-overlay {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 40px 48px;
+    background: rgba(0, 0, 0, 0.72);
+}
+
+.now-playing-label {
+    margin-bottom: 8px;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: #39b7ff;
+}
+
+.now-playing-name {
+    font-size: 38px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.now-playing-group {
+    margin-top: 4px;
+    font-size: 16px;
+    color: #9fb3c8;
+}
+
+.player-hints {
+    margin-top: 22px;
+    font-size: 13px;
+    color: #8aa0b5;
+}
+
+.player-hints b {
+    color: #cfe0ef;
+}
+
+/* ---------- Orsay plugin objects ---------- */
+
+.tv-plugin {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+}
+
+/* ---------- Channel list as a video overlay ---------- */
+
+#browser.library-overlay {
+    z-index: 20;
+    background: rgba(5, 8, 12, 0.8);
+}
+
+#browser.library-overlay .topbar {
+    background: rgba(10, 22, 34, 0.6);
+}
+
+#browser.library-overlay .groups {
+    background: rgba(8, 18, 28, 0.35);
+}
+
+#browser.library-overlay .bottombar {
+    background: rgba(8, 18, 28, 0.6);
+}
+
+/* ---------- Grid view ---------- */
+
+.channel-list.grid {
+    padding: 8px 12px;
+    font-size: 0;
+}
+
+.ch-card {
+    position: relative;
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    margin: 4px;
+    vertical-align: top;
+    border-radius: 8px;
+    overflow: hidden;
+    background: rgba(16, 34, 50, 0.55);
+    color: #cfe0ef;
+    font-size: 13px;
+}
+
+.ch-card.selected {
+    background: #155a86;
+    color: #ffffff;
+    box-shadow: 0 0 0 2px rgba(57, 183, 255, 0.7);
+}
+
+.ch-card.selected-dim {
+    background: rgba(21, 90, 134, 0.4);
+}
+
+.ch-card.playing .ch-card-name {
+    color: #7fd1ff;
+}
+
+.ch-card-logo {
+    position: absolute;
+    left: 10px;
+    top: 8px;
+    width: 130px;
+    height: 80px;
+    overflow: hidden;
+    border-radius: 6px;
+    background: #0c2233;
+}
+
+.ch-card-logo .ch-initial {
+    display: block;
+    line-height: 80px;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 700;
+    color: #eaf2fa;
+}
+
+.ch-card-logo img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #0c2233;
+    object-fit: contain;
+}
+
+.ch-card-name {
+    position: absolute;
+    left: 9px;
+    right: 9px;
+    top: 94px;
+    display: block;
+    height: 32px;
+    overflow: hidden;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 16px;
+}
+
+.ch-card-num {
+    position: absolute;
+    left: 9px;
+    top: 128px;
+    font-size: 11px;
+    color: #7d93a8;
+}
+
+.ch-card.selected .ch-card-num {
+    color: #cfe8fb;
+}
+
+.ch-card-fav {
+    position: absolute;
+    right: 7px;
+    top: 5px;
+    font-size: 15px;
+    color: #ffcf5c;
+}
+
+/* ---------- Volume OSD / toast ---------- */
+
+.volume-box {
+    position: absolute;
+    right: 40px;
+    bottom: 40px;
+    z-index: 40;
+    width: 240px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.78);
+    color: #ffffff;
+}
+
+.volume-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.volume-track {
+    height: 8px;
+    overflow: hidden;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.volume-fill {
+    width: 0;
+    height: 100%;
+    background: #39b7ff;
+}
+
+.toast {
+    position: absolute;
+    left: 50%;
+    bottom: 90px;
+    z-index: 40;
+    width: 320px;
+    margin-left: -160px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #eaf2fa;
+    text-align: center;
+    font-size: 16px;
+}

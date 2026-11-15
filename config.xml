@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets"
+        id="IptvPlayer"
+        version="1.1.0"
+        width="1280"
+        height="720"
+        viewmodes="maximized">
+    <name>IPTV Player</name>
+    <description>IPTV player for Dispatcharr M3U playlists</description>
+    <author href="mailto:developer@example.com">Developer</author>
+    <icon src="icon.png"/>
+    <content src="index.html"/>
+    <access origin="*"/>
+</widget>
