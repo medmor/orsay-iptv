@@ -77,6 +77,9 @@
     var els = {};
     var player = null;
     var favorites = {};
+    var logosBroken = true;
+    var logoFailed = {};
+    var logoProbeId = 0;
     var overlayTimer = null;
     var libraryTimer = null;
     var volumeTimer = null;
@@ -98,6 +101,11 @@
         view: "list",
         gridColumns: 5,
         gridRows: 3,
+        listRendered: false,
+        renderedFilter: null,
+        renderedView: null,
+        renderedTotal: -1,
+        renderedWindowSize: -1,
         groupWindowStart: 0,
         channelWindowStart: 0,
         groupWindowSize: 14,
@@ -251,7 +259,7 @@
         state.groups[1].count = favoriteCount();
         rebuildFiltered();
         renderGroups();
-        renderChannels();
+        renderChannels(true);
         showToast(wasFavorite ? "Removed from favorites" : "Added to favorites");
     }
 
@@ -368,8 +376,8 @@
         if (state.view === "grid") {
             var listWidth = els.channelList.clientWidth || 900;
             var listHeight = els.channelList.clientHeight || 540;
-            state.gridColumns = Math.max(1, Math.floor((listWidth - 24) / 158));
-            state.gridRows = Math.max(1, Math.floor((listHeight - 16) / 158));
+            state.gridColumns = Math.max(1, Math.floor((listWidth - 24) / 148));
+            state.gridRows = Math.max(1, Math.floor((listHeight - 16) / 148));
             state.channelWindowSize = state.gridColumns * state.gridRows;
             return;
         }
@@ -433,10 +441,12 @@
     }
 
     function logoInnerHtml(channel) {
+        var key = channelKey(channel);
         var html = '<span class="ch-initial">' + esc(initialOf(channel.name)) + "</span>";
-        if (channel.logo) {
+        if (channel.logo && !logosBroken && !logoFailed[key]) {
             html += '<img src="' + esc(channel.logo) + '" alt="" data-id="' +
-                esc(channel.id || "") + '" onerror="logoFallback(this)">';
+                esc(channel.id || "") + '" data-key="' + esc(key) +
+                '" onerror="logoFallback(this)">';
         }
         return html;
     }
@@ -453,17 +463,81 @@
 
     function logoFallback(img) {
         var id = img.getAttribute("data-id");
+        var key = img.getAttribute("data-key");
         if (id && !img.getAttribute("data-tried")) {
             img.setAttribute("data-tried", "1");
             img.src = CONFIG.logoBase + encodeURIComponent(id) + ".png";
         } else {
+            if (key) {
+                logoFailed[key] = true;
+            }
             img.style.display = "none";
         }
     }
 
+    function probeLogos(channels) {
+        if (typeof Image === "undefined") {
+            return;
+        }
+        var sample = null;
+        var i;
+        for (i = 0; i < channels.length && i < 30; i++) {
+            if (channels[i].logo) {
+                sample = channels[i];
+                break;
+            }
+        }
+        if (!sample) {
+            return;
+        }
+
+        var probeId = ++logoProbeId;
+        var probe = new Image();
+        probe.onload = function () {
+            if (probeId !== logoProbeId) {
+                return;
+            }
+            logosBroken = false;
+            renderChannels(true);
+        };
+        probe.onerror = function () {
+            if (probeId !== logoProbeId) {
+                return;
+            }
+            logosBroken = true;
+        };
+        probe.src = sample.logo;
+    }
+
     window.logoFallback = logoFallback;
 
-    function renderChannels() {
+    function updateChannelSelection() {
+        var total = state.filtered.length;
+        var rows = els.channelList.getElementsByTagName("li");
+        var focused = state.pane === "channels";
+        var baseClass = state.view === "grid" ? "ch-card" : "ch-row";
+        var i;
+
+        for (i = 0; i < rows.length; i++) {
+            var row = rows[i];
+            var index = parseInt(row.getAttribute("data-index"), 10);
+            if (isNaN(index)) {
+                continue;
+            }
+            var cls = baseClass;
+            if (index === state.selectedChannel) {
+                cls += focused ? " selected" : " selected-dim";
+            }
+            var channel = state.filtered[index];
+            if (channel && state.currentKey && channelKey(channel) === state.currentKey) {
+                cls += " playing";
+            }
+            row.className = cls;
+        }
+        setText(els.channelPos, (state.selectedChannel + 1) + " / " + total);
+    }
+
+    function renderChannels(force) {
         var total = state.filtered.length;
         if (!els.channelList) {
             return;
@@ -472,29 +546,55 @@
         els.channelList.className = state.view === "grid" ? "channel-list grid" : "channel-list";
 
         if (!total) {
+            state.listRendered = false;
             els.channelList.innerHTML = '<li class="empty">No channels in this category</li>';
             setText(els.channelPos, "0 / 0");
             return;
         }
 
-        var focused = state.pane === "channels";
-        var html = [];
-        var start;
-        var end;
-        var i;
+        var prevStart = state.channelWindowStart;
+        var windowSize = state.view === "grid"
+            ? state.gridColumns * state.gridRows
+            : state.channelWindowSize;
+        var newStart;
 
         if (state.view === "grid") {
-            state.channelWindowStart = scrollGridWindow(
+            newStart = scrollGridWindow(
                 state.selectedChannel,
                 total,
                 state.gridColumns,
                 state.gridRows,
-                state.channelWindowStart
+                prevStart
             );
-            start = state.channelWindowStart;
-            end = Math.min(total, start + state.gridColumns * state.gridRows);
+        } else {
+            newStart = scrollWindow(
+                state.selectedChannel,
+                total,
+                state.channelWindowSize,
+                prevStart
+            );
+        }
 
-            for (i = start; i < end; i++) {
+        if (!force && state.listRendered &&
+                newStart === prevStart &&
+                state.renderedFilter === state.filter &&
+                state.renderedView === state.view &&
+                state.renderedTotal === total &&
+                state.renderedWindowSize === windowSize) {
+            updateChannelSelection();
+            return;
+        }
+
+        state.channelWindowStart = newStart;
+
+        var focused = state.pane === "channels";
+        var html = [];
+        var end;
+        var i;
+
+        if (state.view === "grid") {
+            end = Math.min(total, newStart + windowSize);
+            for (i = newStart; i < end; i++) {
                 var cardChannel = state.filtered[i];
                 var cardClass = "ch-card";
                 if (i === state.selectedChannel) {
@@ -504,7 +604,7 @@
                     cardClass += " playing";
                 }
                 html.push(
-                    '<li class="' + cardClass + '">' +
+                    '<li class="' + cardClass + '" data-index="' + i + '">' +
                         channelCardLogoHtml(cardChannel) +
                         '<span class="ch-card-name">' + esc(cardChannel.name) + "</span>" +
                         '<span class="ch-card-num">' + esc(cardChannel.number || String(i + 1)) + "</span>" +
@@ -513,16 +613,8 @@
                 );
             }
         } else {
-            state.channelWindowStart = scrollWindow(
-                state.selectedChannel,
-                total,
-                state.channelWindowSize,
-                state.channelWindowStart
-            );
-            start = state.channelWindowStart;
-            end = Math.min(total, start + state.channelWindowSize);
-
-            for (i = start; i < end; i++) {
+            end = Math.min(total, newStart + windowSize);
+            for (i = newStart; i < end; i++) {
                 var channel = state.filtered[i];
                 var cls = "ch-row";
                 if (i === state.selectedChannel) {
@@ -532,7 +624,7 @@
                     cls += " playing";
                 }
                 html.push(
-                    '<li class="' + cls + '">' +
+                    '<li class="' + cls + '" data-index="' + i + '">' +
                         '<span class="ch-num">' + esc(channel.number || String(i + 1)) + "</span>" +
                         channelLogoHtml(channel) +
                         '<span class="ch-text">' +
@@ -546,6 +638,11 @@
         }
 
         els.channelList.innerHTML = html.join("");
+        state.renderedFilter = state.filter;
+        state.renderedView = state.view;
+        state.renderedTotal = total;
+        state.renderedWindowSize = windowSize;
+        state.listRendered = true;
         setText(els.channelPos, (state.selectedChannel + 1) + " / " + total);
     }
 
@@ -609,6 +706,9 @@
         state.currentKey = null;
         state.groupWindowStart = 0;
         state.channelWindowStart = 0;
+        state.listRendered = false;
+        logosBroken = true;
+        logoFailed = {};
 
         buildGroups();
         rebuildFiltered();
@@ -622,6 +722,7 @@
         showScreen("browser");
         computeWindowSizes();
         renderAll();
+        probeLogos(state.channels);
     }
 
     function fetchPlaylist() {
@@ -883,6 +984,7 @@
             return;
         }
         state.selectedChannel = (state.selectedChannel + delta + total) % total;
+        state.currentKey = channelKey(state.filtered[state.selectedChannel]);
         renderChannels();
         playChannel(state.filtered[state.selectedChannel]);
     }

@@ -26,6 +26,16 @@ body {
     height: 100%;
 }
 
+/* Keep UI inside the TV safe area (overscan). The player stays full-bleed. */
+#loading,
+#browser {
+    left: 5%;
+    top: 5%;
+    width: 90%;
+    height: 90%;
+    overflow: hidden;
+}
+
 /* ---------- Loading ---------- */
 
 #loading {
@@ -256,13 +266,9 @@ body {
 }
 
 .ch-row {
+    position: relative;
     height: 56px;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-align-items: center;
-    align-items: center;
     margin-bottom: 4px;
-    padding: 0 12px;
     border-radius: 8px;
     background: rgba(16, 34, 50, 0.55);
     color: #cfe0ef;
@@ -283,7 +289,12 @@ body {
 }
 
 .ch-num {
-    width: 52px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 56px;
+    height: 56px;
+    line-height: 56px;
     font-size: 15px;
     color: #7d93a8;
     text-align: center;
@@ -294,18 +305,13 @@ body {
 }
 
 .ch-logo {
-    position: relative;
-    -webkit-flex: 0 0 auto;
-    flex: 0 0 auto;
+    position: absolute;
+    left: 58px;
+    top: 8px;
     width: 46px;
     height: 40px;
-    margin-right: 14px;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-align-items: center;
-    align-items: center;
-    -webkit-justify-content: center;
-    justify-content: center;
+    line-height: 40px;
+    text-align: center;
     overflow: hidden;
     border-radius: 6px;
     background: #0c2233;
@@ -328,16 +334,14 @@ body {
 }
 
 .ch-text {
-    min-width: 0;
-    -webkit-flex: 1;
-    flex: 1;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-direction: column;
-    flex-direction: column;
+    position: absolute;
+    left: 118px;
+    right: 48px;
+    top: 9px;
 }
 
 .ch-name {
+    display: block;
     font-size: 16px;
     font-weight: 600;
     overflow: hidden;
@@ -346,6 +350,7 @@ body {
 }
 
 .ch-group {
+    display: block;
     margin-top: 2px;
     font-size: 12px;
     color: #6f8aa3;
@@ -355,7 +360,9 @@ body {
 }
 
 .ch-fav {
-    margin-left: 10px;
+    position: absolute;
+    right: 14px;
+    top: 17px;
     font-size: 18px;
     color: #ffcf5c;
 }
@@ -493,15 +500,15 @@ body {
 .ch-card {
     position: relative;
     display: inline-block;
-    width: 150px;
-    height: 150px;
+    width: 140px;
+    height: 140px;
     margin: 4px;
     vertical-align: top;
     border-radius: 8px;
     overflow: hidden;
     background: rgba(16, 34, 50, 0.55);
     color: #cfe0ef;
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .ch-card.selected {
@@ -522,8 +529,8 @@ body {
     position: absolute;
     left: 10px;
     top: 8px;
-    width: 130px;
-    height: 80px;
+    width: 120px;
+    height: 74px;
     overflow: hidden;
     border-radius: 6px;
     background: #0c2233;
@@ -531,9 +538,9 @@ body {
 
 .ch-card-logo .ch-initial {
     display: block;
-    line-height: 80px;
+    line-height: 74px;
     text-align: center;
-    font-size: 30px;
+    font-size: 28px;
     font-weight: 700;
     color: #eaf2fa;
 }
@@ -552,19 +559,19 @@ body {
     position: absolute;
     left: 9px;
     right: 9px;
-    top: 94px;
+    top: 88px;
     display: block;
-    height: 32px;
+    height: 30px;
     overflow: hidden;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
-    line-height: 16px;
+    line-height: 15px;
 }
 
 .ch-card-num {
     position: absolute;
     left: 9px;
-    top: 128px;
+    top: 118px;
     font-size: 11px;
     color: #7d93a8;
 }
