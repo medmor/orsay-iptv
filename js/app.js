@@ -241,7 +241,8 @@
             return;
         }
         var key = channelKey(channel);
-        if (favorites[key]) {
+        var wasFavorite = !!favorites[key];
+        if (wasFavorite) {
             delete favorites[key];
         } else {
             favorites[key] = true;
@@ -251,6 +252,7 @@
         rebuildFiltered();
         renderGroups();
         renderChannels();
+        showToast(wasFavorite ? "Removed from favorites" : "Added to favorites");
     }
 
     /* ---------- Data / filtering ---------- */

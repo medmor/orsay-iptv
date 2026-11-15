@@ -23,8 +23,12 @@ zip -r -X "$DIST/$APP_ID.zip" \
     config.xml \
     index.html \
     icon.png \
+    icon \
     css \
     js >/dev/null
+
+# Icon URL used by the Orsay App Sync widgetlist.
+cp "$ROOT/icon/icon_106x87.png" "$DIST/icon.png"
 
 SIZE="$(stat -c%s "$DIST/$APP_ID.zip" 2>/dev/null || wc -c < "$DIST/$APP_ID.zip")"
 
@@ -49,6 +53,7 @@ cat > "$DIST/widgetlist.xml" <<EOF
             <title>$APP_TITLE</title>
             <compression size="$SIZE" type="zip"/>
             <description>IPTV Player for Samsung Orsay</description>
+            <icon>$BASE_URL/icon.png</icon>
             <download>$BASE_URL/$APP_ID.zip</download>
         </widget>
     </list>

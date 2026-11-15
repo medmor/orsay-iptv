@@ -1,14 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget xmlns="http://www.w3.org/ns/widgets"
-        id="IptvPlayer"
-        version="1.1.0"
-        width="1280"
-        height="720"
-        viewmodes="maximized">
-    <name>IPTV Player</name>
+<widget>
+    <widgetname>IPTV Player</widgetname>
+    <runTitle>IPTV Player</runTitle>
     <description>IPTV player for Dispatcharr M3U playlists</description>
-    <author href="mailto:developer@example.com">Developer</author>
-    <icon src="icon.png"/>
-    <content src="index.html"/>
-    <access origin="*"/>
+    <ver>1.2.0</ver>
+    <mgrver></mgrver>
+    <type>user</type>
+    <fullwidget>y</fullwidget>
+    <srcctl>y</srcctl>
+    <movie>y</movie>
+    <ticker>n</ticker>
+    <childlock>n</childlock>
+    <videomute>n</videomute>
+    <dcont>y</dcont>
+    <mouse>y</mouse>
+    <width>1280</width>
+    <height>720</height>
+    <ThumbIcon>icon/icon_106x87.png</ThumbIcon>
+    <BigThumbIcon>icon/icon_115x95.png</BigThumbIcon>
+    <ListIcon>icon/icon_85x70.png</ListIcon>
+    <BigListIcon>icon/icon_95x78.png</BigListIcon>
+    <ThumbIconHD>icon/icon_106x87_hd.png</ThumbIconHD>
+    <BigThumbIconHD>icon/icon_115x95_hd.png</BigThumbIconHD>
+    <ListIconHD>icon/icon_85x70_hd.png</ListIconHD>
+    <BigListIconHD>icon/icon_95x78_hd.png</BigListIconHD>
+    <author>
+        <name>Developer</name>
+        <email></email>
+        <link></link>
+    </author>
 </widget>
