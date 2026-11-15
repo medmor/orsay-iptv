@@ -5,6 +5,7 @@
             <title>IPTV Player</title>
             <compression size="17477" type="zip"/>
             <description>IPTV Player for Samsung Orsay</description>
+            <icon src="icon.png"/>
             <download>http://192.168.1.60/IptvPlayer.zip</download>
         </widget>
     </list>
