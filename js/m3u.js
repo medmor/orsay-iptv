@@ -12,11 +12,10 @@
             .replace(/&apos;/gi, "'")
             .replace(/&lt;/gi, "<")
             .replace(/&gt;/gi, ">")
-            .replace(/ᵁᴴᴰ/g, "UHD")
             .replace(/ᴴᴰ/g, "HD")
             .replace(/ˢᴰ/g, "SD")
             .replace(/[\u1d00-\u1edf\u2000-\u2bff]/g, "")
-            .trim();;
+            .trim();
     }
 
     function parseAttributes(line) {
