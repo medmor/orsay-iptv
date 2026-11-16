@@ -29,10 +29,8 @@ body {
 /* Keep UI inside the TV safe area (overscan). The player stays full-bleed. */
 #loading,
 #browser {
-    left: 5%;
-    top: 5%;
-    width: 90%;
-    height: 90%;
+    width: 85%;
+    height: 85%;
     overflow: hidden;
 }
 
@@ -114,6 +112,7 @@ body {
 }
 
 .topbar {
+    width: 85%;
     height: 64px;
     display: -webkit-flex;
     display: flex;
@@ -147,6 +146,8 @@ body {
     display: -webkit-flex;
     display: flex;
     min-height: 0;
+    width: 85%;
+    height: 85%;
 }
 
 /* ---------- Categories ---------- */
@@ -160,6 +161,7 @@ body {
     min-height: 0;
     background: rgba(8, 18, 28, 0.75);
     border-right: 1px solid #12314a;
+    height: 90%;
 }
 
 .pane-title {
